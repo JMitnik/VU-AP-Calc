@@ -8,6 +8,7 @@ public class Main implements CalculatorInterface {
 
     public TokenList readTokens(String input) {
         // TODO: Implement this
+        Scanner inputStream = new Scanner(input);
         return null;
     }
 
@@ -24,8 +25,12 @@ public class Main implements CalculatorInterface {
 
     private void start() {
         // Create a scanner on System.in
-        
         // While there is input, read line and parse it.
+        Scanner in = new Scanner(System.in);
+        while (in.hasNext()) {
+            String test = in.next();
+        }
+        System.out.print("test");
     }
 
     public static void main(String[] argv) {

@@ -1,37 +1,30 @@
-public class DoubleStack implements DoubleStackInterface {
+/** 
+ * @elements numbers of the type Double
+ * @structure linear
+ * @domain all rows of Doubles
+ **/
+public interface DoubleStackInterface {
+
     /**
-     * @param element
      * @pre -
      * @post Double element is now at the top of the stack.
      */
-    @Override
-    public void push(Double element) {
-
-    }
+    void push(Double element);
 
     /**
      * @pre The stack is not empty
      * @post The element at the top of the stack is returned and deleted.
      */
-    @Override
-    public Double pop() {
-        return null;
-    }
+    Double pop();
 
     /**
      * @pre The stack is not empty
      * @post The element at the top of the stack is returned.
      */
-    @Override
-    public Double top() {
-        return null;
-    }
+    Double top();
 
     /**
      * @post The number of elements on the stack is returned
      */
-    @Override
-    public int size() {
-        return 0;
-    }
+    int size();
 }
