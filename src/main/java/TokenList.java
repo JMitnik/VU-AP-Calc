@@ -1,7 +1,13 @@
 public class TokenList implements TokenListInterface {
 
-    private Token[] tokenList;
-    private int tokenListLength;
+    private static final int INITAL_LIST_LENGTH=10;
+    private Token[] tokenArray;
+    private int numberOfElements;
+
+    TokenList() {
+        this.tokenArray = new Token[INITAL_LIST_LENGTH];
+        this.numberOfElements = 0;
+    }
 
     /**
      * @param token
@@ -11,7 +17,29 @@ public class TokenList implements TokenListInterface {
      */
     @Override
     public void add(Token token) {
+        //TODO: Find consistency in using 'this' and not
+        if (numberOfElements == tokenArray.length) {
+            doubleTokenList(tokenArray);
+        }
 
+        this.tokenArray[this.numberOfElements] = token;
+        this.numberOfElements ++;
+    }
+
+    private void doubleTokenList(Token[] originalList) {
+        //TODO: Annotate this
+        Token[] copyList = new Token[originalList.length * 2];
+        this.tokenArray = copyElements(originalList, copyList);
+    }
+
+    private Token[] copyElements(Token[] originalList, Token[] copyList) {
+        //TODO: Annotate this
+        for (int i = 1; i < copyList.length; i++) {
+            //TODO: Should I copy the value of the original token here?
+            copyList[i] = new Token(originalList[i].getValue());
+        }
+
+        return copyList;
     }
 
     /**
@@ -21,7 +49,8 @@ public class TokenList implements TokenListInterface {
      */
     @Override
     public void remove(int index) {
-
+        //TODO: Annotate this
+        //TODO: Implement the remove method
     }
 
     /**
@@ -32,7 +61,7 @@ public class TokenList implements TokenListInterface {
      */
     @Override
     public void set(int index, Token token) {
-        tokenList[index] = token;
+        tokenArray[index] = token;
     }
 
     /**
@@ -43,7 +72,7 @@ public class TokenList implements TokenListInterface {
      */
     @Override
     public Token get(int index) {
-        return tokenList[index];
+        return tokenArray[index];
     }
 
     /**
@@ -52,6 +81,6 @@ public class TokenList implements TokenListInterface {
      */
     @Override
     public int size() {
-        return tokenList.length;
+        return tokenArray.length;
     }
 }

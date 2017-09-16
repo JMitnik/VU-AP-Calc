@@ -7,14 +7,20 @@ public class Main implements CalculatorInterface {
 
 
     public TokenList readTokens(String input) {
-        // TODO: Implement this
-        Scanner inputStream = new Scanner(input);
-        return null;
+        Scanner tokenScanner = new Scanner(input);
+        TokenList tokenList = new TokenList();
+
+        while (tokenScanner.hasNext()) {
+            Token token = new Token(tokenScanner.next());
+            tokenList.add(token);
+        }
+
+        return tokenList;
     }
 
 
     public Double rpn(TokenList tokens) {
-        // TODO: Implement this
+        DoubleStack doubleStack = new DoubleStack(tokens);
         return null;
     }
 
@@ -24,13 +30,11 @@ public class Main implements CalculatorInterface {
     }
 
     private void start() {
-        // Create a scanner on System.in
-        // While there is input, read line and parse it.
+        // TODO: Read input from file instead?
         Scanner in = new Scanner(System.in);
-        while (in.hasNext()) {
-            String test = in.next();
-        }
-        System.out.print("test");
+        String tokenLine = in.nextLine();
+        //TODO: Parse multiple lines with loop
+        TokenList tokenList = readTokens(tokenLine);
     }
 
     public static void main(String[] argv) {

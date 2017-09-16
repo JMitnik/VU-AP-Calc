@@ -9,7 +9,13 @@ public class Token implements TokenInterface {
     private static final String OPERATOR_POWER_TOKEN = "^";
     private static final String PARANTHESIS_TOKENS = "()";
 
+    public Token(String value) {
+        //TODO: Do we create a constructor?
+        this.value = value;
+    }
+
     /**
+
      * @pre -
      * @post The value associated with this token has been returned a String.
      */

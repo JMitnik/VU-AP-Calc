@@ -1,4 +1,14 @@
 public class DoubleStack implements DoubleStackInterface {
+
+    private static final int INITAL_LIST_LENGTH=10;
+    private Double[] doubleArray;
+    private int numberOfElements;
+
+    DoubleStack(TokenList tokenList) {
+        this.doubleArray = new Double[INITAL_LIST_LENGTH];
+        this.numberOfElements = 0;
+    }
+
     /**
      * @param element
      * @pre -
@@ -6,7 +16,27 @@ public class DoubleStack implements DoubleStackInterface {
      */
     @Override
     public void push(Double element) {
+        if (numberOfElements == doubleArray.length) {
+            doubleTokenList(doubleArray);
+        }
 
+        this.doubleArray[this.numberOfElements] = element;
+        this.numberOfElements ++;
+    }
+
+    private void doubleTokenList(Double[] originalList) {
+        //TODO: Annotate this
+        Double[] copyList = new Double[originalList.length * 2];
+        this.doubleArray = copyElements(originalList, copyList);
+    }
+
+    private Double[] copyElements(Double[] originalList, Double[] copyList) {
+        //TODO: Annotate this
+        for (int i = 1; i < copyList.length; i++) {
+            //TODO: Should I copy the value of the original token here?
+            copyList[i] = new Double(originalList[i]);
+        }
+        return copyList;
     }
 
     /**

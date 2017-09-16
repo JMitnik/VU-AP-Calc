@@ -2,7 +2,7 @@
  * TokenInterface interface.
  * @elements characters
  * @structure linear
- * @domain all rows of characters
+ * @domain all rows of character
  */
 public interface TokenInterface {
     int     NUMBER_TYPE = 1,
