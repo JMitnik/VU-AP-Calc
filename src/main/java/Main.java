@@ -23,9 +23,11 @@ public class Main implements CalculatorInterface {
     }
 
     private void start() {
+
     }
 
     public static void main(String[] argv) {
         new Main().start();
     }
 }
+
