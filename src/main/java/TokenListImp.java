@@ -13,7 +13,6 @@ public class TokenListImp implements TokenList {
 
     @Override
     public void add(Token token) {
-        //TODO: Find consistency in using 'this' and not
         if (numberOfElements == tokenArray.length) {
             doubleTokenList();
         }
@@ -43,6 +42,7 @@ public class TokenListImp implements TokenList {
      */
     private Token[] copyElements(Token[] originalList, Token[] copyList) {
         for (int i = 0; i < originalList.length; i++) {
+            //TODO: Do I copy here or do I just point to same object?
             copyList[i] = new TokenImp(originalList[i].getValue());
         }
 

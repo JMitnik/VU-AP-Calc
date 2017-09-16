@@ -1,3 +1,4 @@
+import javax.management.RuntimeErrorException;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -5,6 +6,8 @@ import java.util.Scanner;
 
 public class Main implements CalculatorInterface {
 
+    //TODO: When do we instance a variable as implementation, and when as interface type?
+    //TODO: Do Implementations know of each other?
 
     public TokenList readTokens(String input) {
         Scanner tokenScanner = new Scanner(input);
@@ -20,11 +23,30 @@ public class Main implements CalculatorInterface {
 
 
     public Double rpn(TokenList tokens) {
-        return null;
+        DoubleStack doubleStack = new DoubleStackImp();
+
+        for (int i = 0; i < tokens.size(); i++) {
+            Token token = tokens.get(i);
+            int tokenType = token.getType();
+
+            if (tokenType == Token.NUMBER_TYPE ) {
+                doubleStack.push(Double.parseDouble(token.getValue()));
+            } else if (tokenType == Token.OPERATOR_TYPE) {
+                Double lhs = doubleStack.pop();
+                Double rhs = doubleStack.pop();
+                /// evaluate?
+//                doubleStack.push()
+            }
+        }
+
+        if (doubleStack.size() == 1) {
+            return doubleStack.top();
+        } else {
+            throw new RuntimeException("Invalid Input, remaining tokens on stack.");
+        }
     }
 
     public TokenList shuntingYard(TokenList tokens) {
-
         return null;
     }
 
