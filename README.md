@@ -3,4 +3,4 @@
 * Made in IntelliJ
 * Utilized Gradle
 
-**Fork of [https://github.com/VU-Programming/AP-Calc-Skeleton]AP-Calc-Skeleton
+**Fork of AP-Calc-Skeleton[https://github.com/VU-Programming/AP-Calc-Skeleton]
