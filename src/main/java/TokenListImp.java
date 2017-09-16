@@ -42,7 +42,7 @@ public class TokenListImp implements TokenList {
      * value as the ones in originalList and is returned.
      */
     private Token[] copyElements(Token[] originalList, Token[] copyList) {
-        for (int i = 0; i < copyList.length; i++) {
+        for (int i = 0; i < originalList.length; i++) {
             copyList[i] = new TokenImp(originalList[i].getValue());
         }
 
@@ -51,17 +51,17 @@ public class TokenListImp implements TokenList {
 
     @Override
     public void remove(int index) {
-        for (int i = index + 1; i <= numberOfElements; i++) {
+        for (int i = index + 1; i < numberOfElements; i++) {
             this.tokenArray[i-1] = tokenArray[i];
         }
 
-        this.tokenArray[numberOfElements] = null;
+        this.tokenArray[numberOfElements - 1] = null;
         this.numberOfElements --;
     }
 
     @Override
     public void set(int index, Token token) {
-        tokenArray[index] = token;
+        this.tokenArray[index] = token;
     }
 
     @Override
