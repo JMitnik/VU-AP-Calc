@@ -4,7 +4,6 @@ public class TokenImp implements Token {
     private static final String OPERATOR_MINUS_TOKEN = "-";
     private static final String OPERATOR_MULTIPLY_TOKEN = "*";
     private static final String OPERATOR_DIVIDE_TOKEN = "/";
-    private static final String OPERATOR_POWER_TOKEN = "^";
     private static final String PARENTHESIS_TOKENS = "()";
     private static final int NUMBER_PRECEDENCE= -1;
     private static final int PLUS_MINUS_PRECEDENCE= 0;
@@ -14,7 +13,7 @@ public class TokenImp implements Token {
 
     private String value;
 
-    public TokenImp(String value) {
+    TokenImp(String value) {
         //TODO: Do we need to annotate the constructor?
         this.value = value;
     }
@@ -48,7 +47,7 @@ public class TokenImp implements Token {
     /**
      * @param value The value to check
      * @pre -
-     * @post The given String value is checked as a paranthesis, where
+     * @post The given String value is checked as a parenthesis, where
      * the result is returned as a boolean.
      */
     private boolean isParenthesis(String value) {
@@ -74,12 +73,15 @@ public class TokenImp implements Token {
      * Token's value is returned as an integer.
      */
     private int getOperatorPrecedence() {
-        if (value.equals(OPERATOR_PLUS_TOKEN) || value.equals(OPERATOR_MINUS_TOKEN)) {
-            return PLUS_MINUS_PRECEDENCE;
-        } else if (value.equals(OPERATOR_MULTIPLY_TOKEN) || value.equals(OPERATOR_DIVIDE_TOKEN)) {
-            return MULTI_DIVIDE_PRECEDENCE;
-        } else {
-            return POWER_PRECEDENCE;
+        switch (value) {
+            case OPERATOR_PLUS_TOKEN:
+            case OPERATOR_MINUS_TOKEN:
+                return PLUS_MINUS_PRECEDENCE;
+            case OPERATOR_MULTIPLY_TOKEN:
+            case OPERATOR_DIVIDE_TOKEN:
+                return MULTI_DIVIDE_PRECEDENCE;
+            default:
+                return POWER_PRECEDENCE;
         }
     }
 }
