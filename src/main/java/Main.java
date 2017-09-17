@@ -34,8 +34,7 @@ public class Main implements CalculatorInterface {
             } else if (tokenType == Token.OPERATOR_TYPE) {
                 Double lhs = doubleStack.pop();
                 Double rhs = doubleStack.pop();
-                /// evaluate?
-//                doubleStack.push()
+                Double eval = evaluateExpression(lhs, rhs, token);
             }
         }
 
@@ -43,6 +42,23 @@ public class Main implements CalculatorInterface {
             return doubleStack.top();
         } else {
             throw new RuntimeException("Invalid Input, remaining tokens on stack.");
+        }
+    }
+
+    private Double evaluateExpression(Double leftHandSide, Double righthandSide, Token operator) {
+        switch (operator.getValue()) {
+            case "+":
+                return leftHandSide + righthandSide;
+            case "-":
+                return leftHandSide - righthandSide;
+            case "*":
+                return leftHandSide * righthandSide;
+            case "/":
+                return leftHandSide / righthandSide;
+            case "^":
+                return Math.pow(leftHandSide, righthandSide);
+            default:
+                throw new RuntimeException("Invalid Input, operator not recognized.");
         }
     }
 

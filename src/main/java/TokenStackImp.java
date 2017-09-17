@@ -1,20 +1,13 @@
-public class TokenListImp implements TokenList {
-    private static final int INITAL_LIST_LENGTH=10;
+public class TokenStackImp implements TokenStack {
+    private static final int INITAL_STACK_LENGTH = 10;
 
     private Token[] tokenArray;
     private int numberOfElements;
 
-    TokenListImp() {
-        this.tokenArray = new TokenImp[INITAL_LIST_LENGTH];
-        this.numberOfElements = 0;
-    }
-
-    //TODO: Copy constructor!
-
     @Override
-    public void add(Token token) {
+    public void push(Token token) {
         if (numberOfElements == tokenArray.length) {
-            doubleTokenList();
+            doubleTokenStack();
         }
 
         this.tokenArray[this.numberOfElements] = token;
@@ -27,9 +20,9 @@ public class TokenListImp implements TokenList {
      * new Token[] array with the elements copied from the previous
      * 'tokenArray', and with double the length of the previous tokenArray.
      */
-    private void doubleTokenList() {
+    private void doubleTokenStack() {
         Token[] originalArray = tokenArray;
-        Token[] copyArray = new TokenImp[originalArray.length * 2];
+        Token[] copyArray = new Token[originalArray.length * 2];
         this.tokenArray = copyElements(originalArray, copyArray);
     }
 
@@ -50,27 +43,19 @@ public class TokenListImp implements TokenList {
     }
 
     @Override
-    public void remove(int index) {
-        for (int i = index + 1; i < numberOfElements; i++) {
-            this.tokenArray[i-1] = tokenArray[i];
-        }
-
-        this.tokenArray[numberOfElements - 1] = null;
-        this.numberOfElements --;
+    public Token pop() {
+        Token top = top();
+        this.numberOfElements -- ;
+        return top;
     }
 
     @Override
-    public void set(int index, Token token) {
-        this.tokenArray[index] = token;
-    }
-
-    @Override
-    public Token get(int index) {
-        return tokenArray[index];
+    public Token top() {
+        return tokenArray[numberOfElements - 1];
     }
 
     @Override
     public int size() {
-        return tokenArray.length;
+        return numberOfElements;
     }
 }
