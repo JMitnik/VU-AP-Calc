@@ -46,6 +46,7 @@ public class Main implements CalculatorInterface {
     }
 
     private Double evaluateExpression(Double leftHandSide, Double righthandSide, Token operator) {
+        //TODO: Can I find a way to clean up these operator for the constants?
         switch (operator.getValue()) {
             case "+":
                 return leftHandSide + righthandSide;
@@ -63,7 +64,46 @@ public class Main implements CalculatorInterface {
     }
 
     public TokenList shuntingYard(TokenList tokens) {
-        return null;
+        TokenStack tokenStack = new TokenStackImp();
+        TokenList output = new TokenListImp();
+
+        for (int i = 0; i < tokens.size(); i++) {
+            Token token = tokens.get(i);
+            int tokenType = token.getType();
+
+            if (tokenType == Token.NUMBER_TYPE ) {
+                output.add(token);
+            } else if (tokenType == Token.OPERATOR_TYPE) {
+                if (tokenStack.size() > 0) {
+                    while(tokenStack.top().getType()==Token.OPERATOR_TYPE && tokenStack.top().getPrecedence() >= token.getPrecedence()) {
+                        output.add(tokenStack.pop());
+                    }
+                }
+
+                tokenStack.push(token);
+            }
+            if (token.getValue() == "(") {
+                tokenStack.push(token);
+            } else if (token.getValue() == ")") {
+                if (tokenStack.size() > 0) {
+                    while (!tokenStack.top().getValue().equals("(")) {
+                        output.add(tokenStack.pop());
+                    }
+
+                    tokenStack.pop();
+                }
+            }
+        }
+
+        while(tokenStack.size() > 0) {
+            if (tokenStack.top().getType() == Token.OPERATOR_TYPE) {
+                output.add(tokenStack.pop());
+            } else {
+                tokenStack.pop();
+            }
+        }
+
+        return output;
     }
 
     private void start() {
@@ -71,7 +111,7 @@ public class Main implements CalculatorInterface {
         Scanner in = new Scanner(System.in);
         String tokenLine = in.nextLine();
         //TODO: Parse multiple lines with loop
-        TokenList tokenList = readTokens(tokenLine);
+        TokenList tokenList = shuntingYard(readTokens(tokenLine));
     }
 
     public static void main(String[] argv) {

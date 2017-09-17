@@ -71,6 +71,6 @@ public class TokenListImp implements TokenList {
 
     @Override
     public int size() {
-        return tokenArray.length;
+        return numberOfElements;
     }
 }

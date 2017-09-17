@@ -1,8 +1,13 @@
 public class TokenStackImp implements TokenStack {
-    private static final int INITAL_STACK_LENGTH = 10;
+    private static final int INITAL_STACK_SIZE = 10;
 
     private Token[] tokenArray;
     private int numberOfElements;
+
+    TokenStackImp() {
+        this.tokenArray = new Token[INITAL_STACK_SIZE];
+        this.numberOfElements = 0;
+    }
 
     @Override
     public void push(Token token) {
@@ -51,7 +56,8 @@ public class TokenStackImp implements TokenStack {
 
     @Override
     public Token top() {
-        return tokenArray[numberOfElements - 1];
+        //TODO: Maybe better solution for this?
+        return tokenArray[Math.max(numberOfElements - 1, 0)];
     }
 
     @Override

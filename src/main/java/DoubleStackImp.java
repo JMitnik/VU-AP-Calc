@@ -4,6 +4,11 @@ public class DoubleStackImp implements DoubleStack {
     private Double[] doubleArray;
     private int numberOfElements;
 
+    public DoubleStackImp() {
+        this.doubleArray = new Double[INITAL_STACK_LENGTH];
+        this.numberOfElements = 0;
+    }
+
     @Override
     public void push(Double element) {
         if (numberOfElements == doubleArray.length) {
@@ -51,7 +56,7 @@ public class DoubleStackImp implements DoubleStack {
 
     @Override
     public Double top() {
-        return doubleArray[numberOfElements - 1];
+        return doubleArray[Math.max(numberOfElements - 1, 0)];
     }
 
     @Override
