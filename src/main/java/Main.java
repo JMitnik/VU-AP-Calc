@@ -1,14 +1,7 @@
-import javax.management.RuntimeErrorException;
-import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Main implements CalculatorInterface {
-
-    //TODO: When do we instance a variable as implementation, and when as interface type?
-    //TODO: Do Implementations know of each other?
 
     public TokenList readTokens(String input) {
         Scanner tokenScanner = new Scanner(input);
@@ -35,6 +28,7 @@ public class Main implements CalculatorInterface {
                 Double rhs = doubleStack.pop();
                 Double lhs = doubleStack.pop();
                 Double eval = evaluateExpression(lhs, rhs, token);
+
                 doubleStack.push(eval);
             }
         }
@@ -46,19 +40,26 @@ public class Main implements CalculatorInterface {
         }
     }
 
-    private Double evaluateExpression(Double leftHandSide, Double righthandSide, Token operator) {
-        //TODO: Can I find a way to clean up these operator for the constants?
+    /**
+     * @param leftHandSide left-hand side of expressions to be evaluated
+     * @param rightHandSide right-hand side of expressions to be evaluated
+     * @param operator operation to perform on the given Doubles
+     * @pre -
+     * @post The evaluation of the two operands with the given operator has been returned as
+     * Double.
+     */
+    private Double evaluateExpression(Double leftHandSide, Double rightHandSide, Token operator) {
         switch (operator.getValue()) {
             case "+":
-                return leftHandSide + righthandSide;
+                return leftHandSide + rightHandSide;
             case "-":
-                return leftHandSide - righthandSide;
+                return leftHandSide - rightHandSide;
             case "*":
-                return leftHandSide * righthandSide;
+                return leftHandSide * rightHandSide;
             case "/":
-                return leftHandSide / righthandSide;
+                return leftHandSide / rightHandSide;
             case "^":
-                return Math.pow(leftHandSide, righthandSide);
+                return Math.pow(leftHandSide, rightHandSide);
             default:
                 throw new RuntimeException("Invalid Input, operator not recognized.");
         }
@@ -77,11 +78,12 @@ public class Main implements CalculatorInterface {
             } else if (tokenType == Token.OPERATOR_TYPE) {
                 while (tokenStack.size() > 0) {
                     if (tokenStack.top().getType()==Token.OPERATOR_TYPE && tokenStack.top().getPrecedence() >= token.getPrecedence()) {
+                        // If the top of the 'tokenStack' is an operator and is more or equal important to the
+                        // current token,
                         output.add(tokenStack.pop());
                     } else {
                         break;
                     }
-//                        while (tokenStack.top().getType()==Token.OPERATOR_TYPE && tokenStack.top().getPrecedence() >= token.getPrecedence()) {
                 }
 
                 tokenStack.push(token);
@@ -111,13 +113,36 @@ public class Main implements CalculatorInterface {
     }
 
     private void start() {
-        // TODO: Read input from file instead?
         Scanner in = new Scanner(System.in);
-        String tokenLine = in.nextLine();
-        //TODO: Parse multiple lines with loop
-        Double result = rpn(shuntingYard(readTokens(tokenLine)));
-        System.out.printf("%.6f", result);
+
+        while(in.hasNext()) {
+            String inputLine = in.nextLine();
+            TokenList tokenLine = readTokens(inputLine);
+            parseInputLine(tokenLine);
+
+            Double result = rpn(shuntingYard(tokenLine));
+            System.out.printf("%.6f\n", result);
+        }
     }
+
+    /**
+     * @param tokenList list of Tokens to parse
+     * @pre -
+     * @post The input has been parsed and no errors have been found, or the program notifies the
+     * user that a possible problem in the input has been detected.
+     */
+    private void parseInputLine(TokenList tokenList) {
+        if (tokenList.size() > 0 ) {
+            for (int i = 1; i < tokenList.size(); i ++) {
+                // Checks for duplicate input of the same type subsequently.
+                if (tokenList.get(i).getType() == tokenList.get(i - 1).getType() && ! (tokenList.get(i).getType()==Token.PARENTHESIS_TYPE)) {
+                    System.out.println("WARNING: Input contains duplicate subsequent elements.");
+                }
+            }
+        }
+
+    }
+
 
     public static void main(String[] argv) {
         new Main().start();

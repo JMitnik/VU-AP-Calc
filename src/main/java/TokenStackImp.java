@@ -56,7 +56,6 @@ public class TokenStackImp implements TokenStack {
 
     @Override
     public Token top() {
-        //TODO: Maybe better solution for this?
         return tokenArray[Math.max(numberOfElements - 1, 0)];
     }
 

@@ -1,11 +1,11 @@
 public class TokenListImp implements TokenList {
-    private static final int INITAL_LIST_LENGTH=10;
+    private static final int INITIAL_LIST_LENGTH=10;
 
     private Token[] tokenArray;
     private int numberOfElements;
 
     TokenListImp() {
-        this.tokenArray = new Token[INITAL_LIST_LENGTH];
+        this.tokenArray = new Token[INITIAL_LIST_LENGTH];
         this.numberOfElements = 0;
     }
 
@@ -40,8 +40,7 @@ public class TokenListImp implements TokenList {
      */
     private Token[] copyElements(Token[] originalArray, Token[] copyArray) {
         for (int i = 0; i < originalArray.length; i++) {
-            //TODO: Do I copy here or do I just point to same object?
-            copyArray[i] = new TokenImp(originalArray[i].getValue());
+            copyArray[i] = originalArray[i];
         }
 
         return copyArray;
