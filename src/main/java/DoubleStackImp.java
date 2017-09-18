@@ -49,6 +49,7 @@ public class DoubleStackImp implements DoubleStack {
     @Override
     public Double pop() {
         Double top = top();
+        this.doubleArray[this.numberOfElements] = null;
         this.numberOfElements -- ;
         return top;
     }

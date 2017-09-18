@@ -2,6 +2,7 @@ import javax.management.RuntimeErrorException;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main implements CalculatorInterface {
@@ -21,7 +22,6 @@ public class Main implements CalculatorInterface {
         return tokenList;
     }
 
-
     public Double rpn(TokenList tokens) {
         DoubleStack doubleStack = new DoubleStackImp();
 
@@ -32,9 +32,10 @@ public class Main implements CalculatorInterface {
             if (tokenType == Token.NUMBER_TYPE ) {
                 doubleStack.push(Double.parseDouble(token.getValue()));
             } else if (tokenType == Token.OPERATOR_TYPE) {
-                Double lhs = doubleStack.pop();
                 Double rhs = doubleStack.pop();
+                Double lhs = doubleStack.pop();
                 Double eval = evaluateExpression(lhs, rhs, token);
+                doubleStack.push(eval);
             }
         }
 
@@ -74,17 +75,20 @@ public class Main implements CalculatorInterface {
             if (tokenType == Token.NUMBER_TYPE ) {
                 output.add(token);
             } else if (tokenType == Token.OPERATOR_TYPE) {
-                if (tokenStack.size() > 0) {
-                    while(tokenStack.top().getType()==Token.OPERATOR_TYPE && tokenStack.top().getPrecedence() >= token.getPrecedence()) {
+                while (tokenStack.size() > 0) {
+                    if (tokenStack.top().getType()==Token.OPERATOR_TYPE && tokenStack.top().getPrecedence() >= token.getPrecedence()) {
                         output.add(tokenStack.pop());
+                    } else {
+                        break;
                     }
+//                        while (tokenStack.top().getType()==Token.OPERATOR_TYPE && tokenStack.top().getPrecedence() >= token.getPrecedence()) {
                 }
 
                 tokenStack.push(token);
             }
-            if (token.getValue() == "(") {
+            if (Objects.equals(token.getValue(), "(")) {
                 tokenStack.push(token);
-            } else if (token.getValue() == ")") {
+            } else if (Objects.equals(token.getValue(), ")")) {
                 if (tokenStack.size() > 0) {
                     while (!tokenStack.top().getValue().equals("(")) {
                         output.add(tokenStack.pop());
@@ -111,7 +115,8 @@ public class Main implements CalculatorInterface {
         Scanner in = new Scanner(System.in);
         String tokenLine = in.nextLine();
         //TODO: Parse multiple lines with loop
-        TokenList tokenList = shuntingYard(readTokens(tokenLine));
+        Double result = rpn(shuntingYard(readTokens(tokenLine)));
+        System.out.printf("%.6f", result);
     }
 
     public static void main(String[] argv) {

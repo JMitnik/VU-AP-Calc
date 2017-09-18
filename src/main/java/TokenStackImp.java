@@ -50,6 +50,7 @@ public class TokenStackImp implements TokenStack {
     public Token pop() {
         Token top = top();
         this.numberOfElements -- ;
+        this.tokenArray[this.numberOfElements] = null;
         return top;
     }
 
