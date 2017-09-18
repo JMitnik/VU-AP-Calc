@@ -1,11 +1,11 @@
 public class DoubleStackImp implements DoubleStack {
-    private static final int INITAL_STACK_LENGTH = 10;
+    private static final int INITIAL_STACK_LENGTH = 10;
 
     private Double[] doubleArray;
     private int numberOfElements;
 
-    public DoubleStackImp() {
-        this.doubleArray = new Double[INITAL_STACK_LENGTH];
+     DoubleStackImp() {
+        this.doubleArray = new Double[INITIAL_STACK_LENGTH];
         this.numberOfElements = 0;
     }
 
@@ -40,7 +40,6 @@ public class DoubleStackImp implements DoubleStack {
      */
     private Double[] copyElements(Double[] originalArray, Double[] copyArray) {
         for (int i = 0; i < originalArray.length; i++) {
-            //TODO: Do I copy here or do I just point to same object?
             copyArray[i] = originalArray[i];
         }
 

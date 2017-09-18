@@ -5,11 +5,9 @@ public class TokenListImp implements TokenList {
     private int numberOfElements;
 
     TokenListImp() {
-        this.tokenArray = new TokenImp[INITAL_LIST_LENGTH];
+        this.tokenArray = new Token[INITAL_LIST_LENGTH];
         this.numberOfElements = 0;
     }
-
-    //TODO: Copy constructor!
 
     @Override
     public void add(Token token) {
