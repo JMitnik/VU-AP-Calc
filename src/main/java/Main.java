@@ -1,18 +1,70 @@
+import java.io.PrintStream;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Main implements CalculatorInterface {
 
     public TokenList readTokens(String input) {
-        Scanner tokenScanner = new Scanner(input);
         TokenList tokenList = new TokenListImp();
 
-        while (tokenScanner.hasNext()) {
-            Token token = new TokenImp(tokenScanner.next());
-            tokenList.add(token);
+        // Replaces and removes whitespace from the input
+
+        String[] inputArray = removeDuplicateOperators(input)
+                .replace(" ", "")
+                .split( "(?=[-+*^\\/()])|(?<=[*^\\/()])|(?<=[^-+*^\\/(][+-])" );
+
+        validateStringInput(input);
+
+        for (String token: inputArray) {
+            if (validateToken(token)) {
+                tokenList.add(new TokenImp(token));
+            };
         }
 
         return tokenList;
+    }
+
+    private boolean validateToken(String token) {
+        final String OPERATORS = "+/-*^";
+        final String PARENTHESES = "()";
+
+        if (OPERATORS.contains(token) || token.matches("[+-]?\\d*[\\.,]?\\d*") || PARENTHESES.contains(token)) {
+            return true;
+        } else {
+            throw new RuntimeException("Cannot calculate! Contains an unknown character.");
+        }
+    }
+
+    private void validateStringInput(String input) {
+        validateInputExists(input);
+        validateOperatorInExpressions(input);
+    }
+
+    private void validateInputExists(String input) {
+        if (!(input.matches(".*\\d.*"))) {
+            throw new RuntimeException("The input is empty or contains non-valid characters.");
+        }
+    }
+
+    private void validateOperatorInExpressions(String input) {
+        if (input.matches( ".*\\d\\s+\\d.*" ) ) {
+            throw new RuntimeException("An operator is needed to perform on numbers.");
+        }
+    }
+
+
+    /*
+     * PRE -
+     * POST All subsequent operators in the input which could be replaced by a
+     * single operator (+&-) are removed and replaced by a single operator
+     */
+    private String removeDuplicateOperators( String in ) {
+        while (in.matches( ".*[\\+-]{2,}.*" ) ) {
+            in = in.replaceAll( "\\+{2,}|(--)+", "\\+" );
+            in  = in.replaceAll( "(\\+-)+|(-\\+)+", "-" );
+        }
+
+        return in;
     }
 
     public Double rpn(TokenList tokens) {
@@ -114,35 +166,30 @@ public class Main implements CalculatorInterface {
 
     private void start() {
         Scanner in = new Scanner(System.in);
+        printIntro();
 
         while(in.hasNext()) {
-            String inputLine = in.nextLine();
-            TokenList tokenLine = readTokens(inputLine);
-            parseInputLine(tokenLine);
+            try {
+                String inputLine = in.nextLine();
+                TokenList tokenLine = readTokens(inputLine);
 
-            Double result = rpn(shuntingYard(tokenLine));
-            System.out.printf("%.6f\n", result);
-        }
-    }
-
-    /**
-     * @param tokenList list of Tokens to parse
-     * @pre -
-     * @post The input has been parsed and no errors have been found, or the program notifies the
-     * user that a possible problem in the input has been detected.
-     */
-    private void parseInputLine(TokenList tokenList) {
-        if (tokenList.size() > 0 ) {
-            for (int i = 1; i < tokenList.size(); i ++) {
-                // Checks for duplicate input of the same type subsequently.
-                if (tokenList.get(i).getType() == tokenList.get(i - 1).getType() && ! (tokenList.get(i).getType()==Token.PARENTHESIS_TYPE)) {
-                    System.out.println("WARNING: Input contains duplicate subsequent elements.");
-                }
+                Double result = rpn(shuntingYard(tokenLine));
+                System.out.printf("%.6f\n", result);
+            } catch (RuntimeException error) {
+                System.out.println(error);
             }
+            new PrintStream(System.out).printf("> ");
         }
 
+        in.close();
     }
 
+    private void printIntro() {
+        int VERSION = 4;
+
+        System.out.printf("Welcome to Calculator v%d Enter input in infix notation. Type help for more information.\n", VERSION);
+        System.out.print("Input:\n> ");
+    }
 
     public static void main(String[] argv) {
         new Main().start();

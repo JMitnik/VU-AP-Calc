@@ -14,7 +14,6 @@ public class TokenImp implements Token {
     private String value;
 
     TokenImp(String value) {
-        //TODO: Do we need to annotate the constructor?
         this.value = value;
     }
 

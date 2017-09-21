@@ -15,7 +15,8 @@ public class TokenListImp implements TokenList {
             doubleTokenList();
         }
 
-        this.tokenArray[this.numberOfElements] = token;
+        //todo: test if no this.
+        this.tokenArray[numberOfElements] = token;
         this.numberOfElements ++;
     }
 
@@ -27,7 +28,7 @@ public class TokenListImp implements TokenList {
      */
     private void doubleTokenList() {
         Token[] originalArray = tokenArray;
-        Token[] copyArray = new TokenImp[originalArray.length * 2];
+        Token[] copyArray = new Token[originalArray.length * 2];
         this.tokenArray = copyElements(originalArray, copyArray);
     }
 
