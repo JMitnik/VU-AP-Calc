@@ -15,15 +15,13 @@ public class TokenListImp implements TokenList {
             doubleTokenList();
         }
 
-        //todo: test if no this.
         this.tokenArray[numberOfElements] = token;
         this.numberOfElements ++;
     }
 
     /**
-     * @pre tokenArray.length == numberOfElements
-     * @post The current reference of 'tokenArray' points to a
-     * new Token[] array with the elements copied from the previous
+     * Sets the reference of tokenArray to a new Token[] array
+     * with the elements copied from the previous
      * 'tokenArray', and with double the length of the previous tokenArray.
      */
     private void doubleTokenList() {

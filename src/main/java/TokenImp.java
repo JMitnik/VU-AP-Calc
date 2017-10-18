@@ -1,3 +1,5 @@
+import javax.management.RuntimeErrorException;
+
 public class TokenImp implements Token {
     private static final String OPERATOR_TOKENS = "+-*/^";
     private static final String OPERATOR_PLUS_TOKEN = "+";
@@ -23,34 +25,46 @@ public class TokenImp implements Token {
     }
 
     @Override
-    public int getType() {
-        if (isParenthesis(value)) {
+    public int getType() throws RuntimeException {
+        if (isParenthesis()) {
             return PARENTHESIS_TYPE;
-        } else if (isOperator(value)) {
+        } else if (isOperator()) {
             return OPERATOR_TYPE;
-        } else {
+        } else if (isNumber()) {
             return NUMBER_TYPE;
+        } else {
+            throw new RuntimeException("Token is not recognizable.");
         }
     }
 
     /**
-     * @param value The value to check
-     * @pre -
-     * @post The given String value is checked as an operator,
-     * where the result is a returned as a boolean.
+     * Returns true if the given String 'value' is an operator, else false.
+     * @return boolean
      */
-    private boolean isOperator(String value) {
+    private boolean isOperator() {
         return OPERATOR_TOKENS.contains(value);
     }
 
     /**
-     * @param value The value to check
-     * @pre -
-     * @post The given String value is checked as a parenthesis, where
-     * the result is returned as a boolean.
+     * Returns true if the given String 'value' is a parenthesis, else false.
+     * @return boolean
      */
-    private boolean isParenthesis(String value) {
+    private boolean isParenthesis() {
         return PARENTHESIS_TOKENS.contains(value);
+    }
+
+    /**
+     * Checks if value is number
+     * @return boolean.
+     */
+    private boolean isNumber() {
+        try {
+            double d = Double.parseDouble(value);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -67,9 +81,8 @@ public class TokenImp implements Token {
     }
 
     /**
-     * @pre The value of the token is an operator.
-     * @post The precedence of the type of operator stored as the
-     * Token's value is returned as an integer.
+     * Returns the precedence of the this token, which is an operator.
+     * @return int
      */
     private int getOperatorPrecedence() {
         switch (value) {
