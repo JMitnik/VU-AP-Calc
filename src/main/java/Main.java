@@ -150,6 +150,8 @@ public class Main implements CalculatorInterface {
         } else {
             throw new RuntimeException("Invalid Input.");
         }
+
+        in.close();
     }
 
     /**

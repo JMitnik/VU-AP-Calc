@@ -1,5 +1,5 @@
 public class TokenListImp implements TokenList {
-    private static final int INITIAL_LIST_LENGTH=10;
+    private static final int INITIAL_LIST_LENGTH = 10;
 
     private Token[] tokenArray;
     private int numberOfElements;
@@ -15,8 +15,7 @@ public class TokenListImp implements TokenList {
             doubleTokenList();
         }
 
-        this.tokenArray[numberOfElements] = token;
-        this.numberOfElements ++;
+        tokenArray[ numberOfElements++ ] = token;
     }
 
     /**
@@ -25,9 +24,8 @@ public class TokenListImp implements TokenList {
      * 'tokenArray', and with double the length of the previous tokenArray.
      */
     private void doubleTokenList() {
-        Token[] originalArray = tokenArray;
-        Token[] copyArray = new Token[originalArray.length * 2];
-        this.tokenArray = copyElements(originalArray, copyArray);
+        Token[] copyArray = new Token[tokenArray.length * 2];
+        tokenArray = copyElements(tokenArray, copyArray);
     }
 
     /**
@@ -48,11 +46,10 @@ public class TokenListImp implements TokenList {
     @Override
     public void remove(int index) {
         for (int i = index + 1; i < numberOfElements; i++) {
-            this.tokenArray[i-1] = tokenArray[i];
+            tokenArray[i-1] = tokenArray[i];
         }
 
-        this.tokenArray[numberOfElements - 1] = null;
-        this.numberOfElements --;
+        tokenArray[ numberOfElements-- ] = null;
     }
 
     @Override

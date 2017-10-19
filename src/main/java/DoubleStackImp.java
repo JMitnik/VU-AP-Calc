@@ -15,8 +15,7 @@ public class DoubleStackImp implements DoubleStack {
             doubleDoubleStack();
         }
 
-        this.doubleArray[this.numberOfElements] = element;
-        this.numberOfElements ++;
+        doubleArray[ numberOfElements++ ] = element;
     }
 
     /**
@@ -26,9 +25,8 @@ public class DoubleStackImp implements DoubleStack {
      * 'doubleArray', and with double the length of the previous tokenArray.
      */
     private void doubleDoubleStack() {
-        Double[] originalArray = doubleArray;
-        Double[] copyArray = new Double[originalArray.length * 2];
-        this.doubleArray = copyElements(originalArray, copyArray);
+        Double[] copyArray = new Double[ doubleArray.length * 2 ];
+        doubleArray = copyElements(doubleArray, copyArray);
     }
 
     /**
@@ -48,15 +46,16 @@ public class DoubleStackImp implements DoubleStack {
 
     @Override
     public Double pop() {
-        Double top = top();
-        this.numberOfElements -- ;
-        this.doubleArray[this.numberOfElements] = null;
-        return top;
+        Double result = top();
+        // The "--" in front of a variable will execute the subtraction on
+        // the variable first and then use the variable.
+        doubleArray[ --numberOfElements ] = null;
+        return result;
     }
 
     @Override
     public Double top() {
-        return doubleArray[Math.max(numberOfElements - 1, 0)];
+        return doubleArray[ numberOfElements - 1 ];
     }
 
     @Override

@@ -15,8 +15,7 @@ public class TokenStackImp implements TokenStack {
             doubleTokenStack();
         }
 
-        this.tokenArray[this.numberOfElements] = token;
-        this.numberOfElements ++;
+        this.tokenArray[this.numberOfElements++] = token;
     }
 
     /**
@@ -49,14 +48,13 @@ public class TokenStackImp implements TokenStack {
     @Override
     public Token pop() {
         Token top = top();
-        this.numberOfElements -- ;
-        this.tokenArray[this.numberOfElements] = null;
+        tokenArray[ --numberOfElements ] = null;
         return top;
     }
 
     @Override
     public Token top() {
-        return tokenArray[Math.max(numberOfElements - 1, 0)];
+        return tokenArray[ numberOfElements - 1 ];
     }
 
     @Override

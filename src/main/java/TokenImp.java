@@ -33,8 +33,12 @@ public class TokenImp implements Token {
         } else if (isNumber()) {
             return NUMBER_TYPE;
         } else {
-            throw new RuntimeException("Token is not recognizable.");
+            throw new RuntimeException("Incorrect input.");
         }
+
+        // the first two characters are checked since a number can have a non-digit as one of
+        // these characters (e.g. "+42", "-2.718", "3.1415", ".6626") but not on both.
+        return Character.isDigit(value.charAt(0)) || Character.isDigit(value.charAt(1));
     }
 
     /**
@@ -75,9 +79,9 @@ public class TokenImp implements Token {
             return getOperatorPrecedence();
         } else if (tokenType == PARENTHESIS_TYPE) {
             return PARENTHESIS_PRECEDENCE;
+        } else {
+            return NUMBER_PRECEDENCE;
         }
-
-        return NUMBER_PRECEDENCE;
     }
 
     /**
@@ -89,9 +93,11 @@ public class TokenImp implements Token {
             case OPERATOR_PLUS_TOKEN:
             case OPERATOR_MINUS_TOKEN:
                 return PLUS_MINUS_PRECEDENCE;
+
             case OPERATOR_MULTIPLY_TOKEN:
             case OPERATOR_DIVIDE_TOKEN:
                 return MULTI_DIVIDE_PRECEDENCE;
+
             default:
                 return POWER_PRECEDENCE;
         }
