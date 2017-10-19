@@ -8,14 +8,15 @@ public class Main implements CalculatorInterface {
         Scanner in = new Scanner(System.in);
 
         while(in.hasNext()) {
+            String inputLine = in.nextLine();
+
             try {
-                String inputLine = in.nextLine();
                 TokenList tokenLine = readTokens(inputLine);
 
                 Double result = rpn(shuntingYard(tokenLine));
                 System.out.printf("%.6f\n", result);
             } catch (RuntimeException error) {
-                System.out.println(error);
+                System.out.println("ERROR: " + error.getMessage() );
             }
         }
 
@@ -103,9 +104,9 @@ public class Main implements CalculatorInterface {
      * @param output
      */
     private void sortParenthesisTokenInPrefix(Token token, TokenStack tokenStack, TokenList output) {
-        if (Objects.equals(token.getValue(), "(")) {
+        if (token.getValue().equals("(")) {
             tokenStack.push(token);
-        } else if (Objects.equals(token.getValue(), ")")) {
+        } else if (token.getValue().equals(")")) {
             if (tokenStack.size() > 0) {
                 while (!tokenStack.top().getValue().equals("(")) {
                     output.add(tokenStack.pop());
@@ -150,8 +151,6 @@ public class Main implements CalculatorInterface {
         } else {
             throw new RuntimeException("Invalid Input.");
         }
-
-        in.close();
     }
 
     /**
