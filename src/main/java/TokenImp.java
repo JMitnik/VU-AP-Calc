@@ -14,7 +14,6 @@ public class TokenImp implements Token {
     private String value;
 
     TokenImp(String value) {
-        //TODO: Do we need to annotate the constructor?
         this.value = value;
     }
 
@@ -29,9 +28,26 @@ public class TokenImp implements Token {
             return PARENTHESIS_TYPE;
         } else if (isOperator(value)) {
             return OPERATOR_TYPE;
-        } else {
+        } else if(isNumber(value)){
             return NUMBER_TYPE;
+        } else
+            throw new RuntimeException("Incorrect input.");
+    }
+
+    /**
+     * @param value The value to check
+     * @pre -
+     * @post The given String value is checked as a Number,
+     * where the result is a returned as a boolean.
+     */
+    private boolean isNumber(String value) {
+        if (value.length() == 1 ) {
+            return Character.isDigit(value.charAt(0));
         }
+
+        // the first two characters are checked since a number can have a non-digit as one of
+        // these characters (e.g. "+42", "-2.718", "3.1415", ".6626") but not on both.
+        return Character.isDigit(value.charAt(0)) || Character.isDigit(value.charAt(1));
     }
 
     /**
@@ -47,8 +63,8 @@ public class TokenImp implements Token {
     /**
      * @param value The value to check
      * @pre -
-     * @post The given String value is checked as a parenthesis, where
-     * the result is returned as a boolean.
+     * @post The given String value is checked as a parenthesis,
+     * where the result is returned as a boolean.
      */
     private boolean isParenthesis(String value) {
         return PARENTHESIS_TOKENS.contains(value);
@@ -62,9 +78,9 @@ public class TokenImp implements Token {
             return getOperatorPrecedence();
         } else if (tokenType == PARENTHESIS_TYPE) {
             return PARENTHESIS_PRECEDENCE;
+        } else {
+            return NUMBER_PRECEDENCE;
         }
-
-        return NUMBER_PRECEDENCE;
     }
 
     /**
@@ -77,9 +93,11 @@ public class TokenImp implements Token {
             case OPERATOR_PLUS_TOKEN:
             case OPERATOR_MINUS_TOKEN:
                 return PLUS_MINUS_PRECEDENCE;
+
             case OPERATOR_MULTIPLY_TOKEN:
             case OPERATOR_DIVIDE_TOKEN:
                 return MULTI_DIVIDE_PRECEDENCE;
+
             default:
                 return POWER_PRECEDENCE;
         }

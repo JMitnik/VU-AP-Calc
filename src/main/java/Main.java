@@ -1,4 +1,3 @@
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Main implements CalculatorInterface {
@@ -78,8 +77,8 @@ public class Main implements CalculatorInterface {
             } else if (tokenType == Token.OPERATOR_TYPE) {
                 while (tokenStack.size() > 0) {
                     if (tokenStack.top().getType()==Token.OPERATOR_TYPE && tokenStack.top().getPrecedence() >= token.getPrecedence()) {
-                        // If the top of the 'tokenStack' is an operator and is more or equal important to the
-                        // current token,
+                        // If the top of the 'tokenStack' is an operator and is of more
+                        // or has equal importance to the current token,
                         output.add(tokenStack.pop());
                     } else {
                         break;
@@ -88,9 +87,10 @@ public class Main implements CalculatorInterface {
 
                 tokenStack.push(token);
             }
-            if (Objects.equals(token.getValue(), "(")) {
+
+            if (token.getValue().equals("(")) {
                 tokenStack.push(token);
-            } else if (Objects.equals(token.getValue(), ")")) {
+            } else if (token.getValue().equals(")")) {
                 if (tokenStack.size() > 0) {
                     while (!tokenStack.top().getValue().equals("(")) {
                         output.add(tokenStack.pop());
@@ -117,12 +117,20 @@ public class Main implements CalculatorInterface {
 
         while(in.hasNext()) {
             String inputLine = in.nextLine();
-            TokenList tokenLine = readTokens(inputLine);
-            parseInputLine(tokenLine);
 
-            Double result = rpn(shuntingYard(tokenLine));
-            System.out.printf("%.6f\n", result);
+            try {
+                TokenList tokenLine = readTokens(inputLine);
+                parseInputLine(tokenLine);
+
+                Double result = rpn(shuntingYard(tokenLine));
+                System.out.printf("%.6f\n", result);
+
+            } catch (Exception error) {
+                System.out.println("ERROR: " + error.getMessage() );
+            }
         }
+
+        in.close();
     }
 
     /**
@@ -135,8 +143,8 @@ public class Main implements CalculatorInterface {
         if (tokenList.size() > 0 ) {
             for (int i = 1; i < tokenList.size(); i ++) {
                 // Checks for duplicate input of the same type subsequently.
-                if (tokenList.get(i).getType() == tokenList.get(i - 1).getType() && ! (tokenList.get(i).getType()==Token.PARENTHESIS_TYPE)) {
-                    System.out.println("WARNING: Input contains duplicate subsequent elements.");
+                if (tokenList.get(i).getType() == tokenList.get(i - 1).getType() && tokenList.get(i).getType() != Token.PARENTHESIS_TYPE) {
+                    throw new ArithmeticException("Input contains duplicate subsequent elements.");
                 }
             }
         }
