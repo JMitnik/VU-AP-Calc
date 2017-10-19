@@ -35,10 +35,6 @@ public class TokenImp implements Token {
         } else {
             throw new RuntimeException("Incorrect input.");
         }
-
-        // the first two characters are checked since a number can have a non-digit as one of
-        // these characters (e.g. "+42", "-2.718", "3.1415", ".6626") but not on both.
-        return Character.isDigit(value.charAt(0)) || Character.isDigit(value.charAt(1));
     }
 
     /**
